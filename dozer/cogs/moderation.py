@@ -489,7 +489,7 @@ class Moderation(Cog):
     """=== Direct moderation commands ==="""
 
     @command()
-    @has_permissions(kick_members=True)
+    @has_permissions(manage_messages=True)
     async def warn(self, ctx: DozerContext, member: discord.Member, *, reason: str):
         """Sends a message to the mod log specifying the member has been warned without punishment."""
         orig_channel = ctx.interaction.followup if ctx.interaction else ctx.channel
