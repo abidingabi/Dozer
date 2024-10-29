@@ -771,31 +771,31 @@ class Moderation(Cog):
     `{prefix}deafen @user 1h reason` - deafen @user for 1 hour for a given reason, the timing component (1h) is optional.
     """
 
-    @command()
-    @bot_has_permissions(manage_permissions=True)  # Once instance globally, don't wait instead throw exception
-    @discord.ext.commands.max_concurrency(1, wait=False, per=discord.ext.commands.BucketType.default)
-    @discord.ext.commands.cooldown(rate=10, per=2,
-                                   type=discord.ext.commands.BucketType.guild)  # 10 seconds per 2 members in the guild
-    async def selfdeafen(self, ctx: DozerContext, *, reason: str = "No reason provided"):
-        """Deafen yourself for a given time period to prevent you from reading or sending messages."""
-        orig_channel = ctx.interaction.followup if ctx.interaction else ctx.channel
-        async with ctx.typing():
-            seconds = self.hm_to_seconds(reason)
-            reason = self.hm_regex.sub("", reason) or "No reason provided"
-            if seconds < 300:
-                raise BadArgument("You must self deafen yourself for at least 5 minutes!")
-            if await self._deafen(ctx.author, reason, seconds=seconds, self_inflicted=True, actor=ctx.author,
-                                  orig_channel=orig_channel):
-                await self.mod_log(ctx.author, "deafened", ctx.author, reason, orig_channel, discord.Color.red(),
-                                   global_modlog=False,
-                                   duration=datetime.timedelta(seconds=seconds))
-            else:
-                await ctx.send("You are already deafened!")
-                traceback.format_exc()
+    # @command()
+    # @bot_has_permissions(manage_permissions=True)  # Once instance globally, don't wait instead throw exception
+    # @discord.ext.commands.max_concurrency(1, wait=False, per=discord.ext.commands.BucketType.default)
+    # @discord.ext.commands.cooldown(rate=10, per=2,
+    #                                type=discord.ext.commands.BucketType.guild)  # 10 seconds per 2 members in the guild
+    # async def selfdeafen(self, ctx: DozerContext, *, reason: str = "No reason provided"):
+    #     """Deafen yourself for a given time period to prevent you from reading or sending messages."""
+    #     orig_channel = ctx.interaction.followup if ctx.interaction else ctx.channel
+    #     async with ctx.typing():
+    #         seconds = self.hm_to_seconds(reason)
+    #         reason = self.hm_regex.sub("", reason) or "No reason provided"
+    #         if seconds < 300:
+    #             raise BadArgument("You must self deafen yourself for at least 5 minutes!")
+    #         if await self._deafen(ctx.author, reason, seconds=seconds, self_inflicted=True, actor=ctx.author,
+    #                               orig_channel=orig_channel):
+    #             await self.mod_log(ctx.author, "deafened", ctx.author, reason, orig_channel, discord.Color.red(),
+    #                                global_modlog=False,
+    #                                duration=datetime.timedelta(seconds=seconds))
+    #         else:
+    #             await ctx.send("You are already deafened!")
+    #             traceback.format_exc()
 
-    selfdeafen.example_usage = """
-    `{prefix}selfdeafen time (1h5m, both optional) reason`: deafens you if you need to get work done
-    """
+    # selfdeafen.example_usage = """
+    # `{prefix}selfdeafen time (1h5m, both optional) reason`: deafens you if you need to get work done
+    # """
 
     @command()
     @has_permissions(manage_roles=True)
